@@ -11,7 +11,6 @@ from cmk.gui.plugins.wato import (
 from cmk.gui.valuespec import (
     DropdownChoice,
 )
-import cmk.utils.version as cmk_version
 
 register_check_parameters(
     RulespecGroupCheckParametersVirtualization,
@@ -67,7 +66,7 @@ register_check_parameters(
     match_type = "dict",
 )
 
-if cmk_version.is_enterprise_version() or cmk_version.is_managed_version():
+try:
     from cmk.gui.cee.plugins.wato.agent_bakery.rulespecs.utils import (
         RulespecGroupMonitoringAgentsAgentPlugins,
     )
@@ -92,4 +91,7 @@ if cmk_version.is_enterprise_version() or cmk_version.is_managed_version():
             valuespec=_valuespec_proxmox_qemu_backup,
         )
     )
+
+except ImportError as error:
+    pass
 
